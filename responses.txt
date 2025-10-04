@@ -33,10 +33,10 @@ track changes.
 
 Problem 4:
 
-It seems that our tests fail after the merge because legroot.py was modified to 
-include Fraction in addition to Decimal types through its functions. However,
-existing code still expects Decimals. So, we get TypeErrors trying to operate 
-with mixes of Decimals and Fractions.
+It seems that our tests fail after the merge because files like bonnet.py were 
+modified to use Fraction types in their functions. However, existing code still
+expects Decimal types in many places, like in operations. So, we get TypeErrors 
+trying to operate with mixes of Decimals and Fractions in our tests.
 
 Commands:
 I produced this list because I had restart my repo more than once.

@@ -1,0 +1,110 @@
+Problem 1:
+
+The file polynomial_zeros.ipynb doesn't appear in the commit
+part1-squash because I removed the file from the repository (git rm)
+before making that commit. This is not affected by my addition of
+"*.ipynb" to the .gitignore file: this just prevents such files from 
+being staged in the future. If added now, it wouldn't be tracked by git.
+After all this, the file no longer shows up in following commits.
+
+Problem 2:
+
+I have kept the changes that Iris made to her test file for two reasons. First,
+she set out to make those changes specifically. Meanwhile, Frank fixed the test
+file among other additions that he was making, namely orthogonality tests.
+Branches should, in general, be made for doing one thing particular, then merged.
+Her code seems more streamlined and purpose-built. Second, her work is easier
+to merge, because git is not picking up on most of Frank's changes in the merge
+process. It's still possible to use his functions and the new added dependency on 
+pytest, but it is much easier to just keep 'current changes', since not all the
+'incoming changes' that would be needed to make the code work are brought up by 
+git merge, and manual merging labor is unappealing.
+
+Problem 3:
+
+Frank's idea is great, and it would make managing their report much easier.
+Each student's file can be edited on its own without touching files being edited
+by other people; when it comes time to merge, GitHub can simply handle changes
+to each individual file without the need for manual ordering in a merge.
+Meanwhile, the LaTeX file itself can be modified to change the order of these
+sections alone, which is also a very simple change. Altogether, Frank's system
+would be easier to work on for a team of people, and would make it easier to 
+track changes.
+
+Problem 4:
+
+It seems that our tests fail after the merge because legroot.py was modified to 
+include Fraction in addition to Decimal types through its functions. However,
+existing code still expects Decimals. So, we get TypeErrors trying to operate 
+with mixes of Decimals and Fractions.
+
+Commands:
+I produced this list because I had restart my repo more than once.
+I have left it here for better grading in case this helps you!
+
+Part 1
+git checkout rootfind
+echo "" >> .gitignore
+echo "*.ipynb" >> .gitignore
+git rm polynomial_zeros.ipynb
+git add .gitignore
+git commit -m "ignore .ipynb files and remove polynomial_zeros.ipynb"
+git rebase -i HEAD~2
+mark the first commit (Newton’s method) as pick and the new commit (ignore .ipynb) as squash
+git tag part1-squash
+git checkout main
+git merge rootfind
+git tag part1-merge
+git push origin main
+git push origin part1-squash
+git push origin part1-merge
+
+
+Part 2
+git checkout rational-legendre
+git merge orthotest
+(KEEP CURRENT)
+git add tests/test_analytically_known_legendre_polys.py
+git commit -m "merged rational-legendre & orthotest analytical tests"
+git tag part-2
+git push
+git push origin part-2
+
+Part 3
+git checkout main
+git merge rational-legendre
+(RESOLVE REPORT.md)
+git add report.md
+git add tests/test_analytically_known_legendre_polys.py
+git add tests/
+git commit -m "merged rational-legendre into main, resolved conflicts, ordered report sections"
+git tag part3
+git push
+git push origin part3
+uv run pytest
+
+Part 4
+git checkout gaussquad
+git checkout -b gauss-base 6670a2b
+git cherry-pick af93981                       (A)
+git cherry-pick 6ac92ad                       (B)
+git cherry-pick 6f4ea0b                       (D)
+git cherry-pick 10e1616                       (F)
+git cherry-pick f7463af                       (H)
+uv run pytest
+git tag part4
+git checkout -b composite part4
+git cherry-pick 3f5b6e3                       (C)
+git cherry-pick 2a23b20                       (E)
+git cherry-pick d676da6                       (G)
+uv run pytest
+git checkout main
+git merge part4 -m "merge gauss quadrature feature (part4)"
+uv run pytest
+git push origin main
+git push origin composite
+git push origin part4
+
+
+
+
